@@ -532,8 +532,9 @@ class Rendition {
 	 * Go to the next "page" in the rendition
 	 * @return {Promise}
 	 */
-	next(){
-		return this.q.enqueue(this.manager.next.bind(this.manager))
+	next(check = true){
+		// return this.q.enqueue(this.manager.next.bind(this.manager)).then(this.reportLocation.bind(this));
+		return this.q.enqueue(() => this.manager.next(check))
 			.then(this.reportLocation.bind(this));
 	}
 
@@ -541,8 +542,9 @@ class Rendition {
 	 * Go to the previous "page" in the rendition
 	 * @return {Promise}
 	 */
-	prev(){
-		return this.q.enqueue(this.manager.prev.bind(this.manager))
+	prev(check = true) {
+		// return this.q.enqueue(this.manager.prev.bind(this.manager)).then(this.reportLocation.bind(this));
+		return this.q.enqueue(() => this.manager.prev(check))
 			.then(this.reportLocation.bind(this));
 	}
 

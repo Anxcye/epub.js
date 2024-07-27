@@ -448,7 +448,7 @@ class DefaultViewManager {
 	//
 	// };
 
-	next(){
+	next(check = true){
 		var next;
 		var left;
 
@@ -462,8 +462,9 @@ class DefaultViewManager {
 
 			left = this.container.scrollLeft + this.container.offsetWidth + this.layout.delta;
 
-			if(left <= this.container.scrollWidth) {
-				this.scrollBy(this.layout.delta, 0, true);
+			if(left <= this.container.scrollWidth || !check) {
+				// this.scrollBy(this.layout.delta, 0, true);
+				this.scrollBy(0, 0, true);
 			} else {
 				next = this.views.last().section.next();
 			}
@@ -538,7 +539,7 @@ class DefaultViewManager {
 
 	}
 
-	prev(){
+	prev(check = true){
 		var prev;
 		var left;
 		let dir = this.settings.direction;
@@ -551,8 +552,9 @@ class DefaultViewManager {
 
 			left = this.container.scrollLeft;
 
-			if(left > 0) {
-				this.scrollBy(-this.layout.delta, 0, true);
+			if(left > 0 || !check) {
+				// this.scrollBy(-this.layout.delta, 0, true);
+				this.scrollBy(0, 0, true);
 			} else {
 				prev = this.views.first().section.prev();
 			}
