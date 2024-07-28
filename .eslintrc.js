@@ -16,7 +16,7 @@ module.exports = {
     "rules": {
         "indent": [
             "error",
-            "tab",
+            "space",
             { "VariableDeclarator": { "var": 2, "let": 2, "const": 3 } }
         ],
         "linebreak-style": [

@@ -928,7 +928,24 @@ class Contents {
 			return;
 		}
 		this._onSelectionChange = this.onSelectionChange.bind(this);
-		this.document.addEventListener("selectionchange", this._onSelectionChange, { passive: true });
+    this.document.addEventListener("selectionchange", this._onSelectionChange, { passive: true });
+    // https://github.com/futurepress/epub.js/issues/1366#issuecomment-2026512757
+    // 添加下面的方法
+    this.document.addEventListener("selectstart", (event)=>{
+      const targetNode = document.querySelector(".epub-container");
+      const sourceLeft = targetNode.scrollLeft
+      targetNode.style.overflow = "auto";
+      // 选文字后，开始滚动，说明跨区了进行打断
+      targetNode.addEventListener("scroll",(event2)=>{
+          // console.log("scroll",event2.target.scrollLeft)
+          targetNode.style.overflow = "hidden";
+          var selection = this.window.getSelection();
+          //var r = selection.getRangeAt(0);
+          selection.removeAllRanges();
+          targetNode.scrollLeft = sourceLeft
+      },{ capture: false, once:true })
+    // 添加结束
+    }, { passive: true });
 	}
 
 	/**
@@ -953,7 +970,9 @@ class Contents {
 		}
 		this.selectionEndTimeout = setTimeout(function() {
 			var selection = this.window.getSelection();
-			this.triggerSelectedEvent(selection);
+      this.triggerSelectedEvent(selection);
+      const targetNode = document.querySelector(".epub-container");
+      targetNode.style.overflow = "hidden"; 
 		}.bind(this), 250);
 	}
 

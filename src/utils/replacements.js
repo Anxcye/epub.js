@@ -81,7 +81,13 @@ export function replaceLinks(contents, fn) {
 	}
 
 	var base = qs(contents.ownerDocument, "base");
-	var location = base ? base.getAttribute("href") : undefined;
+  var location = base ? base.getAttribute("href") : undefined;
+  // 我在webview中得到的location变量的值为： "null/OEBPS/Text/part0001.xhtml" 正常情况下应当是："file:///OEBPS/Text/part0001.xhtml"，这是怎么回事？
+  // 前四个字符串如果为null，则将其替换为file://
+  // TODO 为什么会出现这种情况？
+  if (location && location.substring(0, 4) === "null") {
+    location = "file://" + location.substring(4);
+  }
 	var replaceLink = function(link){
 		var href = link.getAttribute("href");
 
